@@ -1,12 +1,6 @@
-// ignore_for_file: prefer_const_constructors, deprecated_member_use
-
-import 'package:flutter/cupertino.dart';
+// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, deprecated_member_use, prefer_final_fields, avoid_print
+import 'dart:math';
 import 'package:flutter/material.dart';
-
-/*
-  Stateless -> Widgets que não podem ser alterados (constantes)
-  Stateful  -> Widgets que podem ser alterados (variáveis)
-*/
 
 void main() {
   runApp(MaterialApp(
@@ -20,75 +14,62 @@ class HomeStateful extends StatefulWidget {
 
   @override
   _HomeStatefulState createState() => _HomeStatefulState();
-  /* 
-    '=>' é o mesmo que return. Exemplo:
-
-      _HomeStatefulState createState() {
-        return _HomeStatefulState();
-      }
-  */
 }
 
 class _HomeStatefulState extends State<HomeStateful> {
-  var _texto = "Maurício Casagrande";
+  var _frases = [
+    "Frase1",
+    "Frase2",
+    "Frase3",
+    "Frase4",
+  ];
 
-  @override
-  Widget build(BuildContext context) {
-    print("Build chamado");
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Instagram"),
-        backgroundColor: Colors.purple,
-      ),
-      body: Container(
-        child: Column(
-          children: [
-            RaisedButton(
-              onPressed: () {
-                setState(() {
-                  _texto = "Curso Flutter";
-                });
-              },
-              child: Text("Clique aqui"),
-              color: Colors.amber,
-            ),
-            Text("Nome: $_texto")
-          ],
-        ),
-      ),
-    );
+  var _fraseGerada = "Clique abaixo para gerar uma frase!";
+
+  void _gerarFrase() {
+    // numero randomico
+    var numeroSorteado = Random().nextInt(_frases.length);
+
+    setState(() {
+      _fraseGerada = _frases[numeroSorteado];
+    });
   }
-}
-
-class Home extends StatelessWidget {
-  const Home({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var _titulo = "Instagram";
-
     return Scaffold(
-      appBar: AppBar(
-        title: Text(_titulo),
-        backgroundColor: Colors.purple,
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(16),
-        child: Text("Conteúdo Principal"),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.blueGrey,
-        child: Padding(
+        appBar:
+            AppBar(backgroundColor: Colors.green, title: Text("Frases do Dia")),
+        body: Container(
           padding: EdgeInsets.all(16),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Text("texto 1"),
-              Text("texto 1"),
-            ],
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Image.asset("images/logo.png"),
+                Text(
+                  _fraseGerada,
+                  textAlign: TextAlign.justify,
+                  style: TextStyle(
+                      fontSize: 25,
+                      fontStyle: FontStyle.italic,
+                      color: Colors.black),
+                ),
+                RaisedButton(
+                  onPressed: _gerarFrase,
+                  child: Text(
+                    "Nova frase",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  color: Colors.green,
+                )
+              ],
+            ),
           ),
-        ),
-      ),
-    );
+        ));
   }
 }
